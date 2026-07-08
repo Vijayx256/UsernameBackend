@@ -8,7 +8,7 @@ app = Flask(__name__)
 client = MongoClient(os.environ["MONGO_URI"])
 
 db = client["newclonemanagerfilestore"]
-uname = db["uname"]
+uname = db["Username"]
 
 
 def decode(base64_string):
