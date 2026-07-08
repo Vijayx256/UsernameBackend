@@ -12,12 +12,11 @@ uname = db["uname"]
 
 
 def decode(base64_string):
-    base64_string = base64_string.strip("=")
-    base64_bytes = (
-        base64_string + "=" * (-len(base64_string) % 4)
-    ).encode("ascii")
-    return base64.urlsafe_b64decode(base64_bytes).decode("ascii")
-
+    base64_string = base64_string.strip("=") # links generated before this commit will be having = sign, hence striping them to handle padding errors.
+    base64_bytes = (base64_string + "=" * (-len(base64_string) % 4)).encode("ascii")
+    string_bytes = base64.urlsafe_b64decode(base64_bytes) 
+    string = string_bytes.decode("ascii")
+    return string
 
 @app.route("/")
 def home():
@@ -39,7 +38,7 @@ def get_bot(short_link):
         if not find:
             return Response("Nothing", mimetype="text/plain")
 
-        username = find.get("chat_id")
+        username = find["chat_id"]
 
         if not username:
             return Response("Nothing", mimetype="text/plain")
